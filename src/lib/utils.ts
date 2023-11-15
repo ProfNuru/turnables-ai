@@ -16,8 +16,8 @@ export function absoluteUrl(path: string) {
 }
 
 export function constructMetadata({
-  title = "Turnables - the SaaS for businesses and students",
-  description = "Quill is a software to make chatting to your PDF files easy.",
+  title = "Turnables - the AI Assistant for businesses and students",
+  description = "Turnables is a software to make chatting to your PDF files easy.",
   image = "/thumbnail.jpg",
   icons = "/favicon.ico",
   noIndex = false
@@ -48,7 +48,7 @@ export function constructMetadata({
       creator: "@ProfNuru22"
     },
     icons,
-    metadataBase: new URL('https://quill-jet.vercel.app'),
+    metadataBase: new URL('https://turnables.vercel.app'),
     themeColor: '#FFF',
     ...(noIndex && {
       robots: {
