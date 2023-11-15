@@ -1,14 +1,12 @@
-# Quill - A Modern Fullstack SaaS-Platform
+# Turnables - An AI Chat Assistant
 
 Built with the Next.js 13.5 App Router, tRPC, TypeScript, Prisma & Tailwind
 
-![Project Image](https://github.com/joschan21/quill/blob/master/public/thumbnail.png)
+![Project Image](https://github.com/joschan21/quill/blob/master/public/thumbnail.jpg)
 
 ## Features
 
-- 🛠️ Complete SaaS Built From Scratch
-- 💻 Beautiful Landing Page & Pricing Page Included
-- 💳 Free & Pro Plan Using Stripe
+- 💳 Free & Pro Plan Using Stripe/PayStack
 - 📄 A Beautiful And Highly Functional PDF Viewer
 - 🔄 Streaming API Responses in Real-Time
 - 🔒 Authentication Using Kinde
@@ -22,14 +20,13 @@ Built with the Next.js 13.5 App Router, tRPC, TypeScript, Prisma & Tailwind
 - 🌲 Pinecone as our Vector Storage
 - 📊 Prisma as our ORM
 - 🔤 100% written in TypeScript
-- 🎁 ...much more
 
 ## Getting started
 
 To get started with this project, run
 
 ```bash
-  git clone https://github.com/joschan21/quill.git
+  git clone https://github.com:ProfNuru/turnables-ai.git
 ```
 
 and copy the .env.example variables into a separate .env file, fill them out & and that's all you need to get started!
