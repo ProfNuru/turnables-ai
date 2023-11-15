@@ -16,9 +16,9 @@ export function absoluteUrl(path: string) {
 }
 
 export function constructMetadata({
-  title = "Quill - the SaaS for students",
-  description = "Quill is an open-source software to make chatting to your PDF files easy.",
-  image = "/thumbnail.png",
+  title = "Turnables - the SaaS for businesses and students",
+  description = "Quill is a software to make chatting to your PDF files easy.",
+  image = "/thumbnail.jpg",
   icons = "/favicon.ico",
   noIndex = false
 }: {
@@ -45,15 +45,15 @@ export function constructMetadata({
       title,
       description,
       images: [image],
-      creator: "@joshtriedcoding"
+      creator: "@ProfNuru22"
     },
     icons,
     metadataBase: new URL('https://quill-jet.vercel.app'),
     themeColor: '#FFF',
     ...(noIndex && {
       robots: {
-        index: false,
-        follow: false
+        index: true,
+        follow: true
       }
     })
   }

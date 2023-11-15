@@ -9,6 +9,7 @@ import {
 import { ArrowRight } from 'lucide-react'
 import UserAccountNav from './UserAccountNav'
 import MobileNav from './MobileNav'
+import Image from 'next/image'
 
 const Navbar = () => {
   const { getUser } = getKindeServerSession()
@@ -21,7 +22,12 @@ const Navbar = () => {
           <Link
             href='/'
             className='flex z-40 font-semibold'>
-            <span>quill.</span>
+            <Image
+            src="/logo-text.png"
+            width={100}
+            height={30}
+            alt="Turnables logo"
+            />
           </Link>
 
           <MobileNav isAuth={!!user} />
