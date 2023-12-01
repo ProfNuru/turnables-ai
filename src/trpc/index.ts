@@ -170,6 +170,7 @@ export const appRouter = router({
           userId: ctx.userId,
         },
       })
+      console.log("File:",file);
 
       if (!file) return { status: 'PENDING' as const }
 
