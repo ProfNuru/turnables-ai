@@ -106,7 +106,6 @@ export const POST = async (req: NextRequest) => {
 
     const stream = OpenAIStream(response, {
       async onCompletion(completion) {
-        console.log("Stream complete:", completion);
         await db.message.create({
           data: {
             text: completion,
@@ -115,9 +114,6 @@ export const POST = async (req: NextRequest) => {
             userId,
           },
         });
-      },
-      async onFinal(completion) {
-        console.log("Stream final:", completion);
       },
     });
 
