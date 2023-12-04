@@ -112,10 +112,10 @@ const Page = () => {
                     <p className="text-gray-500">{tagline}</p>
                     <p className="my-5 font-display text-6xl font-semibold">
                       {plan === "Pro"
-                        ? "GHS XX.XX"
+                        ? "$XX.XX"
                         : new Intl.NumberFormat("en", {
                             style: "currency",
-                            currency: "GHS",
+                            currency: "USD",
                           }).format(price)}
                     </p>
                     <p className="text-gray-500">per month</p>
@@ -200,8 +200,8 @@ const Page = () => {
                           className: "w-full",
                         })}
                       >
-                        Upgrade
-                        <ArrowRight className="h-5 w-5 ml-1.5" />
+                        Coming soon
+                        {/* <ArrowRight className="h-5 w-5 ml-1.5" /> */}
                       </Button>
                     )}
                   </div>
