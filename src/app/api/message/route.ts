@@ -19,6 +19,7 @@ export const POST = async (req: NextRequest) => {
     const user = getUser();
 
     const { id: userId } = user;
+    const enhanceWithExternalSource = false;
 
     if (!userId) return new Response("Unauthorized", { status: 401 });
 
@@ -73,18 +74,24 @@ export const POST = async (req: NextRequest) => {
     }));
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4-1106-preview",
+      model: "gpt-3.5-turbo", // "gpt-4-1106-preview",
       temperature: 0,
       stream: true,
       messages: [
         {
           role: "system",
-          content:
-            "Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format.",
+          content: `Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format. ${
+            !enhanceWithExternalSource &&
+            "Do not use information outside of the context or document in your responses."
+          }`,
         },
         {
           role: "user",
           content: `Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
+          ${
+            !enhanceWithExternalSource &&
+            "Do not use information outside of the context or document in your responses."
+          }
         
   \n----------------\n
   
