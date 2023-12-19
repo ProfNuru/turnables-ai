@@ -23,6 +23,22 @@ model User {
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 }
 
+model Subscription{
+  id   String @id @default(uuid())
+  plan String
+  date_paid DateTime @default(now())
+  email String?
+  first_name String?
+  last_name String?
+  user_id String
+  payment_method String?
+  payment_page String
+  amount Int
+  customer_id String
+  subscription_id String?
+  transaction_reference String @unique
+}
+
 enum UploadStatus {
   PENDING
   PROCESSING
