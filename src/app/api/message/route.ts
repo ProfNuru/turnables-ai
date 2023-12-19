@@ -8,6 +8,7 @@ import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { NextRequest, NextResponse } from "next/server";
 
 import { OpenAIStream, StreamingTextResponse } from "ai";
+import { isBefore } from "date-fns";
 
 export const POST = async (req: NextRequest) => {
   // endpoint for asking a question to a pdf file
@@ -22,6 +23,13 @@ export const POST = async (req: NextRequest) => {
     const enhanceWithExternalSource = false;
 
     if (!userId) return new Response("Unauthorized", { status: 401 });
+
+    const dbUser = await db.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+    if (!dbUser) return new Response("Unauthorized", { status: 401 });
 
     const { fileId, message } = SendMessageValidator.parse(body);
 
@@ -73,8 +81,14 @@ export const POST = async (req: NextRequest) => {
       content: msg.text,
     }));
 
+    const isSubscribed =
+      dbUser.stripeCurrentPeriodEnd &&
+      isBefore(new Date(), dbUser.stripeCurrentPeriodEnd)
+        ? true
+        : false;
+
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // "gpt-4-1106-preview",
+      model: isSubscribed ? "gpt-4-1106-preview" : "gpt-3.5-turbo", // "gpt-4-1106-preview",
       temperature: 0,
       stream: true,
       messages: [
