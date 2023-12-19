@@ -1,17 +1,11 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { Button, buttonVariants } from "./ui/button";
-import { trpc } from "@/app/_trpc/client";
+import { buttonVariants } from "./ui/button";
+// import { trpc } from "@/app/_trpc/client";
 import Link from "next/link";
 
 const UpgradeButton = () => {
-  const { mutate: createStripeSession } = trpc.createStripeSession.useMutation({
-    onSuccess: ({ url }) => {
-      window.location.href = url ?? "/dashboard/billing";
-    },
-  });
-
   const subscriptionPage = "https://paystack.com/pay/turnables-ai-pro";
 
   return (
