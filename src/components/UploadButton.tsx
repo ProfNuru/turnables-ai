@@ -57,46 +57,49 @@ const UploadDropzone = ({
     <Dropzone
       multiple={false}
       onDrop={async (acceptedFile) => {
-        setIsUploading(true);
+        try {
+          setIsUploading(true);
 
-        console.log("Uploading", acceptedFile);
+          const progressInterval = startSimulatedProgress();
 
-        const progressInterval = startSimulatedProgress();
+          // handle file uploading
+          const res = await startUpload(acceptedFile);
 
-        // handle file uploading
-        const res = await startUpload(acceptedFile);
+          console.log("Res:", res);
 
-        console.log("Res:", res);
+          if (!res) {
+            console.log("File limit exceeded:", res);
+            return toast({
+              title: "File size limit exceeded",
+              description: `Maximum PDF size of ${
+                isSubscribed ? "16" : "4"
+              }MB exceeded`,
+              variant: "destructive",
+            });
+          }
 
-        if (!res) {
-          closeDialog();
-          return toast({
-            title: "File size limit exceeded",
-            description: `Maximum PDF size of ${
-              isSubscribed ? "16" : "4"
-            }MB exceeded`,
-            variant: "destructive",
-          });
+          const [fileResponse] = res;
+
+          const key = fileResponse?.key;
+
+          console.log("Key:", key);
+
+          if (!key) {
+            console.log("Key error occured:", key);
+            return toast({
+              title: "Something went wrong",
+              description: "Please try again later",
+              variant: "destructive",
+            });
+          }
+
+          clearInterval(progressInterval);
+          setUploadProgress(100);
+
+          startPolling({ key });
+        } catch (error) {
+          console.log("Upload error:", error);
         }
-
-        const [fileResponse] = res;
-
-        const key = fileResponse?.key;
-
-        console.log("Key:", key);
-
-        if (!key) {
-          return toast({
-            title: "Something went wrong",
-            description: "Please try again later",
-            variant: "destructive",
-          });
-        }
-
-        clearInterval(progressInterval);
-        setUploadProgress(100);
-
-        startPolling({ key });
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
