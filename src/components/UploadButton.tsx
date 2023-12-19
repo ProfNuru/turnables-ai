@@ -69,6 +69,7 @@ const UploadDropzone = ({
         console.log("Res:", res);
 
         if (!res) {
+          closeDialog();
           return toast({
             title: "File size limit exceeded",
             description: `Maximum PDF size of ${
@@ -76,7 +77,6 @@ const UploadDropzone = ({
             }MB exceeded`,
             variant: "destructive",
           });
-          closeDialog();
         }
 
         const [fileResponse] = res;
