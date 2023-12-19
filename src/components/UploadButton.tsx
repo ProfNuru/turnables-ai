@@ -12,7 +12,13 @@ import { useToast } from "./ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
 import { useRouter } from "next/navigation";
 
-const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
+const UploadDropzone = ({
+  isSubscribed,
+  closeDialog,
+}: {
+  isSubscribed: boolean;
+  closeDialog: () => void;
+}) => {
   const router = useRouter();
 
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -60,17 +66,24 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
         // handle file uploading
         const res = await startUpload(acceptedFile);
 
+        console.log("Res:", res);
+
         if (!res) {
           return toast({
-            title: "Something went wrong",
-            description: "Please try again later",
+            title: "File size limit exceeded",
+            description: `Maximum PDF size of ${
+              isSubscribed ? "16" : "4"
+            }MB exceeded`,
             variant: "destructive",
           });
+          closeDialog();
         }
 
         const [fileResponse] = res;
 
         const key = fileResponse?.key;
+
+        console.log("Key:", key);
 
         if (!key) {
           return toast({
@@ -167,7 +180,10 @@ const UploadButton = ({ isSubscribed }: { isSubscribed: boolean }) => {
       </DialogTrigger>
 
       <DialogContent>
-        <UploadDropzone isSubscribed={isSubscribed} />
+        <UploadDropzone
+          closeDialog={() => setIsOpen(false)}
+          isSubscribed={isSubscribed}
+        />
       </DialogContent>
     </Dialog>
   );
