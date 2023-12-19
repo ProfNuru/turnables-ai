@@ -2,7 +2,6 @@ import Dashboard from "@/components/Dashboard";
 import { db } from "@/db";
 import { getUserSubscriptionPlan } from "@/lib/stripe";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { addDays, addMonths, isBefore } from "date-fns";
 import { redirect } from "next/navigation";
 
 const Page = async ({
@@ -12,6 +11,8 @@ const Page = async ({
   params: { slug: string };
   searchParams: { reference: string };
 }) => {
+  const transactionReference = searchParams.reference;
+
   const { getUser } = getKindeServerSession();
   const user = getUser();
 
@@ -25,8 +26,6 @@ const Page = async ({
 
   if (!dbUser) redirect("/auth-callback?origin=dashboard");
 
-  const transactionReference = searchParams.reference;
-
   try {
     const response = await fetch(
       `https://api.paystack.co/transaction/verify/${transactionReference}`,
@@ -34,7 +33,7 @@ const Page = async ({
         method: "GET",
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`, // notice the Bearer before your token
         },
       }
     );
@@ -51,37 +50,16 @@ const Page = async ({
         payment_method: transaction.data.channel,
         payment_page: transaction.data.metadata.referrer,
         amount: transaction.data.amount,
-        customer_id: transaction.data.customer.id.toString(),
-        subscription_id: transaction.data.plan_object.id.toString(),
-        transaction_reference: transactionReference,
+        customer_id: transaction.data.customer.id,
+        subscription_id: transaction.data.plan_object.id,
       };
 
       //   Create subscription
-      const newSubscription = await db.subscription.create({
-        data: subscription,
-      });
 
-      // Set 1 month + 1 full day subscription
-      const prevSubscriptionEnd = dbUser.stripeCurrentPeriodEnd;
-      const newSubscriptionEndDate =
-        prevSubscriptionEnd && isBefore(prevSubscriptionEnd, new Date())
-          ? addDays(addMonths(new Date(), 1), 1)
-          : prevSubscriptionEnd
-          ? addDays(addMonths(prevSubscriptionEnd, 1), 1)
-          : addDays(addMonths(new Date(), 1), 1);
-
-      const updatedSubscribedUser = await db.user.update({
-        where: {
-          id: newSubscription.user_id,
-        },
-        data: {
-          stripePriceId: process.env.PRO_PLAN_30,
-          stripeCustomerId: newSubscription.customer_id.toString(),
-          stripeSubscriptionId: newSubscription.subscription_id?.toString(),
-          stripeCurrentPeriodEnd: newSubscriptionEndDate,
-        },
-      });
+      // Update user's current subscription end date
     }
+
+    console.log("Transaction:", transaction);
   } catch (error) {
     console.log("Transaction error:", error);
   }

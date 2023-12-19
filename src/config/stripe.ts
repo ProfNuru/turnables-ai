@@ -7,7 +7,7 @@ export const PLANS = [
     price: {
       amount: 0,
       priceIds: {
-        test: "",
+        test: "143945498",
         production: "",
       },
     },
@@ -18,9 +18,9 @@ export const PLANS = [
     quota: 50,
     pagesPerPdf: 25,
     price: {
-      amount: 50,
+      amount: 30,
       priceIds: {
-        test: "price_1NuEwTA19umTXGu8MeS3hN8L",
+        test: "1439454",
         production: "",
       },
     },

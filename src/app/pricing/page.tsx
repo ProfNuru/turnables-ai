@@ -95,13 +95,13 @@ const Page = () => {
                 <div
                   key={plan}
                   className={cn("relative rounded-2xl bg-white shadow-lg", {
-                    "border-2 border-blue-600 shadow-blue-200": plan === "Pro",
+                    "border-2 border-teal-600 shadow-blue-200": plan === "Pro",
                     "border border-gray-200": plan !== "Pro",
                   })}
                 >
                   {plan === "Pro" && (
-                    <div className="absolute -top-5 left-0 right-0 mx-auto w-32 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 px-3 py-2 text-sm font-medium text-white">
-                      Coming soon
+                    <div className="absolute -top-5 left-0 right-0 mx-auto w-32 rounded-full bg-gradient-to-r from-teal-800 to-teal-600 px-3 py-2 text-sm font-medium text-white">
+                      Upgrade now
                     </div>
                   )}
 
@@ -111,12 +111,10 @@ const Page = () => {
                     </h3>
                     <p className="text-gray-500">{tagline}</p>
                     <p className="my-5 font-display text-6xl font-semibold">
-                      {plan === "Pro"
-                        ? "$XX.XX"
-                        : new Intl.NumberFormat("en", {
-                            style: "currency",
-                            currency: "USD",
-                          }).format(price)}
+                      {new Intl.NumberFormat("en", {
+                        style: "currency",
+                        currency: "USD",
+                      }).format(price)}
                     </p>
                     <p className="text-gray-500">per month</p>
                   </div>
@@ -189,20 +187,18 @@ const Page = () => {
                         {user ? "Upgrade now" : "Sign up"}
                         <ArrowRight className="h-5 w-5 ml-1.5" />
                       </Link>
+                    ) : user ? (
+                      <UpgradeButton />
                     ) : (
-                      // :
-                      // user ? (
-                      //   <UpgradeButton />
-                      // )
-                      <Button
-                        disabled={true}
+                      <Link
+                        href="/sign-in"
                         className={buttonVariants({
                           className: "w-full",
                         })}
                       >
-                        Coming soon
-                        {/* <ArrowRight className="h-5 w-5 ml-1.5" /> */}
-                      </Button>
+                        {user ? "Upgrade now" : "Sign up"}
+                        <ArrowRight className="h-5 w-5 ml-1.5" />
+                      </Link>
                     )}
                   </div>
                 </div>
