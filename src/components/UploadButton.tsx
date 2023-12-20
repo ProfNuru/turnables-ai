@@ -65,10 +65,8 @@ const UploadDropzone = ({
           // handle file uploading
           const res = await startUpload(acceptedFile);
 
-          console.log("Res:", res);
-
           if (!res) {
-            console.log("File limit exceeded:", res);
+            closeDialog();
             return toast({
               title: "File size limit exceeded",
               description: `Maximum PDF size of ${
@@ -81,8 +79,6 @@ const UploadDropzone = ({
           const [fileResponse] = res;
 
           const key = fileResponse?.key;
-
-          console.log("Key:", key);
 
           if (!key) {
             console.log("Key error occured:", key);
