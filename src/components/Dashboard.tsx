@@ -49,7 +49,10 @@ const Dashboard = ({ subscriptionPlan }: PageProps) => {
   return (
     <main className="mx-auto max-w-7xl md:p-10">
       <Alert className="flex flex-col gap-4">
-        <AlertDescription>You are currently on the PRO plan</AlertDescription>
+        <AlertDescription>
+          You are currently on the{" "}
+          <strong>{subscriptionPlan.isSubscribed ? "PRO" : "FREE"}</strong> plan
+        </AlertDescription>
         <Link
           href="/dashboard/billing"
           className={buttonVariants({
