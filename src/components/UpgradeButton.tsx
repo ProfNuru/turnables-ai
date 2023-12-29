@@ -5,17 +5,21 @@ import { buttonVariants } from "./ui/button";
 // import { trpc } from "@/app/_trpc/client";
 import Link from "next/link";
 
-const UpgradeButton = () => {
-  const subscriptionPage = "https://paystack.com/pay/turnables-ai-pro";
-
+const UpgradeButton = ({
+  planLink,
+  text,
+}: {
+  planLink: string | null | undefined;
+  text?: string;
+}) => {
   return (
     <Link
-      href={subscriptionPage}
+      href={"#"}
       className={buttonVariants({
         className: "w-full",
       })}
     >
-      Upgrade now <ArrowRight className="h-5 w-5 ml-1.5" />
+      {text ? text : "Coming soon"} <ArrowRight className="h-5 w-5 ml-1.5" />
     </Link>
   );
 };

@@ -1,0 +1,73 @@
+
+        <Card>
+          <CardHeader>
+            <CardTitle>API Endpoints</CardTitle>
+            <CardDescription>
+              {subscriptionPlan.isSubscribed &&
+              // @ts-ignore
+              subscriptionPlan.name.toLowerCase() === "pro+" ? (
+                "Generate your API keys and integrate our API into your applications."
+              ) : (
+                <>
+                  <p className="mb-4">
+                    Upgrade to Pro Plus to integrate our API into your
+                    applications
+                  </p>
+                  <UpgradeButton
+                    text="Upgrade to Pro Plus"
+                    planLink={PLANS.find((p) => p.slug === "pro+")?.paymentLink}
+                  />
+                </>
+              )}
+            </CardDescription>
+          </CardHeader>
+
+          {subscriptionPlan.isSubscribed &&
+            // @ts-ignore
+            subscriptionPlan.name.toLowerCase() === "pro+" && (
+              <CardFooter className="flex flex-col items-start gap-2">
+                <CardTitle className="scroll-m-20 text-xl font-semibold tracking-tight">
+                  API Key
+                </CardTitle>
+                <CardDescription className="flex items-center justify-between w-full">
+                  <div className="flex items-center gap-4">
+                    <p>{apiKey}</p>
+
+                    <button type="button" onClick={() => copyApiKey(apiKey)}>
+                      <Copy className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <Button disabled={generatingAPI} onClick={generateNewApiKey}>
+                    {generatingAPI && (
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    {generatingAPI ? "Generating..." : "Generate new API Key"}
+                  </Button>
+                </CardDescription>
+              </CardFooter>
+            )}
+
+          {files && files.length > 0 ? (
+            files.map((file) => (
+              <CardFooter
+                key={file.id}
+                className="flex flex-col items-start gap-2"
+              >
+                <CardTitle className="scroll-m-20 text-xl font-semibold tracking-tight">
+                  {file.name} ID
+                </CardTitle>
+                <CardDescription className="flex items-center justify-between w-full">
+                  <div className="flex items-center gap-4">
+                    <p>{file.id}</p>
+
+                    <button type="button" onClick={() => copyApiKey(file.id)}>
+                      <Copy className="h-4 w-4" />
+                    </button>
+                  </div>
+                </CardDescription>
+              </CardFooter>
+            ))
+          ) : (
+            <CardFooter>No files uploaded</CardFooter>
+          )}
+        </Card>

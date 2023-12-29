@@ -12,7 +12,7 @@ import { useToast } from "./ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
 import { useRouter } from "next/navigation";
 
-const UploadDropzone = ({
+export const UploadDropzone = ({
   isSubscribed,
   closeDialog,
 }: {

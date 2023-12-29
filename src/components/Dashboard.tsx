@@ -28,8 +28,6 @@ const Dashboard = ({ subscriptionPlan }: PageProps) => {
     string | null
   >(null);
 
-  console.log("Subscription:", subscriptionPlan);
-
   const utils = trpc.useContext();
 
   const { data: files, isLoading } = trpc.getUserFiles.useQuery();
@@ -51,7 +49,15 @@ const Dashboard = ({ subscriptionPlan }: PageProps) => {
       <Alert className="flex flex-col gap-4">
         <AlertDescription>
           You are currently on the{" "}
-          <strong>{subscriptionPlan.isSubscribed ? "PRO" : "FREE"}</strong> plan
+          <strong>
+            {subscriptionPlan.isSubscribed
+              ? // @ts-ignore
+                subscriptionPlan.name.toLowerCase() === "pro+"
+                ? "PRO PLUS"
+                : "PRO"
+              : "FREE"}
+          </strong>{" "}
+          plan
         </AlertDescription>
         <Link
           href="/dashboard/billing"

@@ -17,6 +17,8 @@ model User {
   File    File[]
   Message Message[]
 
+  apiKey String? @unique
+
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")
@@ -74,4 +76,11 @@ model Message {
   userId    String?
   File      File?    @relation(fields: [fileId], references: [id])
   fileId    String?
+}
+
+model Enquiry {
+  id   String @id @default(cuid())
+  email String @db.Text()
+  message String @db.Text()
+  createdAt DateTime @default(now())
 }

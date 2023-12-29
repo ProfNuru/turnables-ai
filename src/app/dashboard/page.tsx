@@ -75,15 +75,15 @@ const Page = async ({
           id: newSubscription.user_id,
         },
         data: {
-          stripePriceId: process.env.PRO_PLAN_30,
+          stripePriceId: newSubscription.plan,
           stripeCustomerId: newSubscription.customer_id.toString(),
-          stripeSubscriptionId: newSubscription.subscription_id?.toString(),
+          stripeSubscriptionId: newSubscription.plan,
           stripeCurrentPeriodEnd: newSubscriptionEndDate,
         },
       });
     }
   } catch (error) {
-    console.log("Transaction error:", error);
+    console.log("No transaction:", error);
   }
 
   const subscriptionPlan = await getUserSubscriptionPlan();

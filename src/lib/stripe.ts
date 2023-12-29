@@ -49,20 +49,24 @@ export async function getUserSubscriptionPlan() {
       dbUser.stripeCurrentPeriodEnd.getTime() + 86_400_000 > Date.now()
   );
 
-  const plan = isSubscribed
+  let plan = isSubscribed
     ? PLANS.find((plan) => plan.price.priceIds.test === dbUser.stripePriceId)
     : null;
 
   let isCanceled = false;
   if (isSubscribed && dbUser.stripeSubscriptionId) {
-    // const stripePlan = await stripe.subscriptions.retrieve(
-    //   dbUser.stripeSubscriptionId
-    // )
     isCanceled =
       dbUser.stripeCurrentPeriodEnd &&
       isBefore(dbUser.stripeCurrentPeriodEnd, new Date())
         ? true
         : false;
+  }
+
+  // Extra check for edge case
+  if (!plan && isSubscribed) {
+    plan = PLANS.find((p) => p.slug === "pro");
+  } else if (!plan) {
+    plan = PLANS.find((p) => p.slug === "free");
   }
 
   return {

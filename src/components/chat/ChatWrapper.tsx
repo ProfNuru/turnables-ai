@@ -3,18 +3,31 @@
 import { trpc } from "@/app/_trpc/client";
 import ChatInput from "./ChatInput";
 import Messages from "./Messages";
-import { ChevronLeft, Loader2, XCircle } from "lucide-react";
+import {
+  ChevronLeft,
+  CrossIcon,
+  Loader2,
+  MessageCircleIcon,
+  X,
+  XCircle,
+} from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 import { ChatContextProvider } from "./ChatContext";
 import { PLANS } from "@/config/stripe";
+import useScreenSize from "@/hooks/useScreenSize";
+import { RefObject, useEffect, useRef } from "react";
 
 interface ChatWrapperProps {
   fileId: string;
   isSubscribed: boolean;
+  plan: string;
 }
 
-const ChatWrapper = ({ fileId, isSubscribed }: ChatWrapperProps) => {
+const ChatWrapper = ({ fileId, isSubscribed, plan }: ChatWrapperProps) => {
+  const screenSize = useScreenSize();
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
   const { data, isLoading } = trpc.getFileUploadStatus.useQuery(
     {
       fileId,
@@ -24,6 +37,14 @@ const ChatWrapper = ({ fileId, isSubscribed }: ChatWrapperProps) => {
         data?.status === "SUCCESS" || data?.status === "FAILED" ? false : 500,
     }
   );
+
+  useEffect(() => {
+    if (screenSize.width < 1280 && chatEndRef && !isLoading) {
+      setTimeout(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 2000);
+    }
+  }, [screenSize, chatEndRef, isLoading]);
 
   if (isLoading)
     return (
@@ -67,11 +88,13 @@ const ChatWrapper = ({ fileId, isSubscribed }: ChatWrapperProps) => {
             <p className="text-zinc-500 text-sm">
               Your{" "}
               <span className="font-medium">
-                {isSubscribed ? "Pro" : "Free"}
+                {isSubscribed ? (plan === "Pro+" ? "Pro Plus" : "Pro") : "Free"}
               </span>{" "}
               plan supports up to{" "}
               {isSubscribed
-                ? PLANS.find((p) => p.name === "Pro")?.pagesPerPdf
+                ? plan === "Pro+"
+                  ? PLANS.find((p) => p.name === "Pro+")?.pagesPerPdf
+                  : PLANS.find((p) => p.name === "Pro")?.pagesPerPdf
                 : PLANS.find((p) => p.name === "Free")?.pagesPerPdf}{" "}
               pages per PDF.
             </p>
@@ -100,6 +123,7 @@ const ChatWrapper = ({ fileId, isSubscribed }: ChatWrapperProps) => {
         </div>
 
         <ChatInput />
+        <div ref={chatEndRef}></div>
       </div>
     </ChatContextProvider>
   );
