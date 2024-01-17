@@ -5,9 +5,9 @@ import { buttonVariants } from "@/components/ui/button";
 import Image from "next/image";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-export default function Home() {
+export default async function Home() {
   const { getUser } = getKindeServerSession();
-  const user = getUser();
+  const user = await getUser();
 
   return (
     <>

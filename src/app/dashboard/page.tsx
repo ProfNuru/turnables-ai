@@ -13,7 +13,8 @@ const Page = async ({
   searchParams: { reference: string };
 }) => {
   const { getUser } = getKindeServerSession();
-  const user = getUser();
+
+  const user = await getUser();
 
   if (!user || !user.id) redirect("/auth-callback?origin=dashboard");
 

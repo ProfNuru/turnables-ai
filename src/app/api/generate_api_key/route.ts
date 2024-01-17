@@ -5,9 +5,9 @@ import generateKeyAndUpdateUser from "./generateKeyAndUpddateUser";
 export async function GET(req: NextRequest) {
   try {
     const { getUser } = getKindeServerSession();
-    const user = getUser();
+    const user = await getUser();
 
-    const { id: userId } = user;
+    const userId = user?.id;
 
     const updatedUser = await generateKeyAndUpdateUser(userId || "");
     return NextResponse.json({ key: updatedUser.apiKey });

@@ -14,7 +14,7 @@ const Page = async ({
   const transactionReference = searchParams.reference;
 
   const { getUser } = getKindeServerSession();
-  const user = getUser();
+  const user = await getUser();
 
   if (!user || !user.id) redirect("/auth-callback?origin=dashboard");
 

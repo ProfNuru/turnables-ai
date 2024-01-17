@@ -17,9 +17,9 @@ import { isBefore } from "date-fns";
 
 export async function getUserSubscriptionPlan() {
   const { getUser } = getKindeServerSession();
-  const user = getUser();
+  const user = await getUser();
 
-  if (!user.id) {
+  if (!user?.id) {
     return {
       ...PLANS[0],
       isSubscribed: false,
