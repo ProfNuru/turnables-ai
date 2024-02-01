@@ -70,7 +70,7 @@ export const POST = async (
       take: 6,
     });
 
-    const formattedPrevMessages = prevMessages.map((msg) => ({
+    const formattedPrevMessages = prevMessages.map((msg: any) => ({
       role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
       content: msg.text,
     }));
@@ -106,7 +106,7 @@ export const POST = async (
   \n----------------\n
   
   PREVIOUS CONVERSATION:
-  ${formattedPrevMessages.map((message) => {
+  ${formattedPrevMessages.map((message: any) => {
     if (message.role === "user") return `User: ${message.content}\n`;
     return `Assistant: ${message.content}\n`;
   })}
